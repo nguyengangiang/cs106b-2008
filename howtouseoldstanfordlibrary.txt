@@ -1,0 +1,5 @@
+need .h header file and .cpp source file and Makefile file
+mkdir obj
+mkdir lib
+make 
+g++ -Iinclude(where .h files are) -Llin(where .a file is) name.cpp -lStanfordCPPLib(just lib)
