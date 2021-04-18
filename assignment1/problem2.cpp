@@ -35,7 +35,7 @@ Grades CalcAvgAndWrite(Vector<int>& vec, ofstream& outp) {
 
 void readFile(Vector<int>& vec, ifstream& inp, ofstream& outp) {
     int temp;
-    while(!inp.fail()) {
+    while(!inp.eof()) {
         inp >> temp;
         cout << temp << endl;
         outp.write((char*) &temp, 4);
