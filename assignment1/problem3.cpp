@@ -15,75 +15,84 @@ struct letterFrequencyT {
 };
 
 const int NUM_LETTER = 'z' - 'a' + 1;
+const string outputFileName = "letters.bin";
 
-void initVector(Vector<letterFrequencyT>& lf) {
+void InitVector(Vector<letterFrequencyT>& frequencies) {
     for (int i = 0; i < NUM_LETTER; i++) {
         letterFrequencyT lft;
         lft.frequency = 0;
         lft.letter = i + 'a';
-        lf.add(lft);
+        frequencies.add(lft);
     }
 }
 
-void countFrequency(Vector<letterFrequencyT>& lf, ifstream& inp) {
+void CountFrequency(Vector<letterFrequencyT>& frequencies, ifstream& inp) {
     while (!inp.eof()) {
         char ch = inp.get();
         if (isalpha(ch)) {
-            lf[tolower(ch) - 'a'].frequency++;
+            frequencies[tolower(ch) - 'a'].frequency++;
         }
     }
 }
 
-void writeFrequency(Vector<letterFrequencyT>& lfv, string filename) {
+void WriteFrequency(Vector<letterFrequencyT>& frequencies, string filename) {
     ofstream outp;
     outp.open(filename, iostream::binary);
+    if (outp.fail()) {
+        error("Couldn't open " + filename);
+    }
     letterFrequencyT v[NUM_LETTER];
     for (int i = 0; i < NUM_LETTER; i++) {
-        v[i] = (lfv[i]);
+        v[i] = (frequencies[i]);
     }
     outp.write((char*) &v, NUM_LETTER * sizeof(letterFrequencyT));
+    outp.close();
 }
 
-void printVector(Vector<letterFrequencyT>& lfv) {
-    for (int i = 0; i < lfv.size(); i++) {
-        printf("letter: %c, frequency: %ld\n", lfv[i].letter, lfv[i].frequency);
+void PrintVector(Vector<letterFrequencyT>& frequencies) {
+    for (int i = 0; i < frequencies.size(); i++) {
+        if (frequencies[i].frequency > 0) {
+            printf("letter: %c, frequency: %ld\n", frequencies[i].letter, frequencies[i].frequency);
+        }
     }
 }
 
-Vector<letterFrequencyT> readFrequency(string filename) {
+void ReadFrequency(string filename, Vector<letterFrequencyT>& frequenciesFromFile) {
     ifstream inp;
     inp.open(filename, iostream::binary);
-    if (inp.fail()) error("couldnt open file.");
-    Vector<letterFrequencyT> readFromFile;
+    if (inp.fail()) error("couldn't open " + filename);
     letterFrequencyT v[NUM_LETTER];
     inp.read((char*) &v, sizeof(letterFrequencyT) * NUM_LETTER);
     inp.close();
     for (int i = 0; i < NUM_LETTER; i++) {
-        readFromFile.add(v[i]);
+        frequenciesFromFile.add(v[i]);
     }
-    return readFromFile;
+    inp.close();
 }
 
 void CountLetters(string filename) {
-    Vector<letterFrequencyT> lfv;
-    Vector<letterFrequencyT> readFromFile;
+    Vector<letterFrequencyT> frequencies;
+    Vector<letterFrequencyT> frequenciesFromFile;
     ifstream inp;
     inp.open(filename);
     ofstream outp;
-    outp.open("shakespeare.bin", iostream::binary);
-    if (inp.fail() | outp.fail()) {
-        error("Cannot open file.");
+    outp.open(outputFileName, iostream::binary);
+    if (inp.fail()) {
+        error("Cannot open file " + filename);
     }
-    initVector(lfv);
-    countFrequency(lfv, inp);
-    writeFrequency(lfv, "shakespeare.bin");
-    readFromFile = readFrequency("shakespeare.bin");
-    printVector(readFromFile);
+    if (outp.fail()) {
+        error("Cannot open file" + outputFileName);
+    }
+    InitVector(frequencies);
+    CountFrequency(frequencies, inp);
+    WriteFrequency(frequencies, outputFileName);
+    ReadFrequency(outputFileName, frequenciesFromFile);
+    PrintVector(frequenciesFromFile);
     outp.close();
     inp.close();
 }
 
 int main() {
-    CountLetters("shakespeare.txt");
+    CountLetters("letters.txt");
     return 0;
 }
