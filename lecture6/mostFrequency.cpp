@@ -7,12 +7,9 @@
 
 using namespace std;
 
-const string commonWord[] = {"and", "a", "i", "the"};
-const int TOTAL_COMMON_WORD = 4;
+const string commonWord[] = {"and", "a", "i", "the", "to", "of", "that", "you", "for", "my", "in"};
 
 void MostFrequency(ifstream & inp, map<string, int>& wordFrequency) {
-    int maxFreqNum = 0;
-    string maxFreqStr;
     while (!inp.eof()) {
         string temp;
         inp >> temp;
@@ -22,8 +19,8 @@ void MostFrequency(ifstream & inp, map<string, int>& wordFrequency) {
 }
 
 bool Contains(string str) {
-    for (int i = 0; i < TOTAL_COMMON_WORD; i++) {
-        if (commonWord[i] == str) {
+    for (string word : commonWord) {
+        if (word == str) {
             return true;
         }
     }
