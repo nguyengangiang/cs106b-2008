@@ -9,7 +9,7 @@ using namespace std;
 
 const string commonWord[] = {"and", "a", "i", "the", "to", "of", "that", "you", "for", "my", "in"};
 
-void MostFrequency(ifstream & inp, map<string, int>& wordFrequency) {
+void CountOccurences(ifstream & inp, map<string, int>& wordFrequency) {
     while (!inp.eof()) {
         string temp;
         inp >> temp;
@@ -27,7 +27,7 @@ bool Contains(string str) {
     return false;
 }
 
-void CountOccurences(map<string, int> wordFrequency) {
+void MostFrequency(map<string, int> wordFrequency) {
     std::map<string, int>::iterator itr;
     int maxFreq = 0;
     string maxFreqWord;
@@ -47,8 +47,8 @@ int main() {
         error("Cannot open shakespeare.txt");
     }
     map<string, int> wordFrequency;
-    MostFrequency(inp, wordFrequency);
-    CountOccurences(wordFrequency);
+    CountOccurences(inp, wordFrequency);
+    MostFrequency(wordFrequency);
     inp.close();
     return 0;
 }
