@@ -2,7 +2,7 @@
 
 using namespace std;
 
-int fibR(int n) {
+uint64_t fibR(uint64_t n) {
     if (n == 2) {
         return 1;
     } else if (n == 1) {
@@ -12,16 +12,16 @@ int fibR(int n) {
     }
 }
 
-int fibL(int n) {
-    int result1 = 1;
-    int result2 = 1;
-    int result = 0;
+uint64_t fibL(uint64_t n) {
+    uint64_t result1 = 1;
+    uint64_t result2 = 1;
+    uint64_t result = 0;
 
     if (n <= 2) {
         return 1;
     }
 
-    for (int i = 2; i < n; i++) {
+    for (uint64_t i = 2; i < n; i++) {
         result = result1 + result2;
         result2 = result1;
         result1 = result;
@@ -31,8 +31,8 @@ int fibL(int n) {
 
 int main() {
     cout << "Calculate fib of? ";
-    int inp;
+    uint64_t inp;
     cin >> inp;
-    cout << "recursion: " << fibR(inp) << endl;
+    //cout << "recursion: " << fibR(inp) << endl;
     cout << "loops: " << fibL(inp) << endl;
 }
