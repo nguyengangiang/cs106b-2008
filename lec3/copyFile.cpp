@@ -6,10 +6,9 @@ using namespace std;
 
 void CopyData(ifstream& input, ofstream& output) {
     string line = "";
-    while (true) {
+    while (!input.fail()) {
         string upperLine = "";
         getline(input, line);
-        if (input.fail()) break;
         upperLine = toUpperCase(line);
         output << upperLine << endl;
     }
