@@ -7,11 +7,12 @@
             "args": [
                 "-g",
                 "${file}",
+                "-std=c++11",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-I../cpplib/include",
                 "-L../cpplib/lib",
-                "-lStanfordCPPLib"
+                "-lStanfordCPPLib",
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
