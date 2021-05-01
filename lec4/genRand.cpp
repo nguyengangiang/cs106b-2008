@@ -10,7 +10,7 @@ int main() {
     const uint64_t TOTAL_NUM = 1000000;
 
     ofstream output;
-    output.open("randomNum", iostream::binary);
+    output.open("randomNum", ofstream::binary);
     uint64_t total = 0;
 
     random_device rd;
@@ -25,5 +25,6 @@ int main() {
     double avg = total / TOTAL_NUM;
     output.write((char*)(&avg), 8);
     printf("%f\n", avg);
+    output.close();
     return 0;
 }
