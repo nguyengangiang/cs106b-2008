@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+*.dSYM
+*.jar
+*.DS_Store
+*.class
