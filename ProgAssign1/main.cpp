@@ -21,32 +21,56 @@
 #include "gmath.h"
 #include "gobjects.h"
 #include "gwindow.h"
+#include "random.h"
+#include "gtimer.h"
+
 using namespace std;
 
-/* Constants */
+void DrawTriangle(vector<GPoint>& vertices) {
+    cout << "Choose three points in the window." << endl;
+    int timeClick = 0;
+    GEvent e = waitForClick();
+    while (timeClick < 3) {
+        GPoint vertex = GPoint(e.getX(), e.getY());
+        vertices.push_back(vertex);
+        timeClick++;
+        if (timeClick <= 2) {
+            e = waitForClick();
+        }
+    }
+}
 
-const double PACMAN_SIZE = 60;
-const double PAUSE_TIME = 20;
-const double DELTA_X = 2;
-const int DELTA_THETA = 5;
+void ChaosGame(vector<GPoint>& vertices, GWindow& gw) {
+    int ri = randomInteger(0, 2);
+    GPoint currentPoint = vertices[ri];
+    GOval* filledCircle = new GOval(currentPoint.x, currentPoint.y, 3, 3);
+    filledCircle->setFilled(true);
+    filledCircle->setFillColor("RED");
+    gw.add(filledCircle);
+    GEvent e;
+    GTimer timer(1);
+    timer.start();
+    while (true) {
+        e = waitForEvent(MOUSE_EVENT + TIMER_EVENT);
+        if (e.getEventType() == MOUSE_CLICKED) {
+            break;
+        }
+        ri = randomInteger(0, 2);
+        GPoint randomVertex = vertices[ri];
+        double newX = (currentPoint.x + randomVertex.x) / 2;
+        double newY = (currentPoint.y + randomVertex.y) / 2;
+        currentPoint = GPoint(newX, newY);
+        GOval *newCircle = new GOval(newX, newY, 3, 3);
+        newCircle->setFilled(true);
+        newCircle->setFillColor("RED");
+        gw.add(newCircle);
+    }
+}
 
 int main() {
-   GWindow gw(600, 400);
-   GArc *pacman = new GArc(PACMAN_SIZE, PACMAN_SIZE, 45, 270);
-   pacman->setFilled(true);
-   pacman->setFillColor("YELLOW");
-   gw.add(pacman, 0, (gw.getHeight() - PACMAN_SIZE) / 2);
-   waitForClick();
-   int angle = 45;
-   int sign = -1;
-   double limit = gw.getWidth() - PACMAN_SIZE;
-   while (pacman->getX() < limit) {
-      pacman->move(DELTA_X, 0);
-      angle += sign * DELTA_THETA;
-      if (angle == 0 || angle == 45) sign = -sign;
-      pacman->setStartAngle(angle);
-      pacman->setSweepAngle(360 - 2 * angle);
-      pause(PAUSE_TIME);
-   }
-   return 0;
+    GWindow gw(800, 800);
+    vector<GPoint> vertices;
+    DrawTriangle(vertices);
+    ChaosGame(vertices, gw);
+    return 0;
 }
