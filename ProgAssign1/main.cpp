@@ -26,6 +26,8 @@
 
 using namespace std;
 
+volatile bool stopGame = false;
+
 void DrawTriangle(vector<GPoint>& vertices) {
     cout << "Choose three points in the window." << endl;
     int timeClick = 0;
@@ -40,6 +42,12 @@ void DrawTriangle(vector<GPoint>& vertices) {
     }
 }
 
+void MouseEventHandler(GEvent e) {
+    if (e.getEventType() == MOUSE_CLICKED) {
+        stopGame = true;
+    }
+}
+
 void ChaosGame(vector<GPoint>& vertices, GWindow& gw) {
     int ri = randomInteger(0, 2);
     GPoint currentPoint = vertices[ri];
@@ -47,20 +55,12 @@ void ChaosGame(vector<GPoint>& vertices, GWindow& gw) {
     filledCircle->setFilled(true);
     filledCircle->setFillColor("RED");
     gw.add(filledCircle);
-    GEvent e;
-    GTimer timer(1);
-    timer.start();
-    while (true) {
-        e = waitForEvent(MOUSE_EVENT + TIMER_EVENT);
-        if (e.getEventType() == MOUSE_CLICKED) {
-            break;
-        }
+    gw.setMouseListener(MouseEventHandler);
+    while (!stopGame) {
         ri = randomInteger(0, 2);
         GPoint randomVertex = vertices[ri];
-        double newX = (currentPoint.x + randomVertex.x) / 2;
-        double newY = (currentPoint.y + randomVertex.y) / 2;
-        currentPoint = GPoint(newX, newY);
-        GOval *newCircle = new GOval(newX, newY, 3, 3);
+        currentPoint = GPoint((currentPoint.x + randomVertex.x) / 2, (currentPoint.y + randomVertex.y) / 2);
+        GOval *newCircle = new GOval(currentPoint.x, currentPoint.y, 3, 3);
         newCircle->setFilled(true);
         newCircle->setFillColor("RED");
         gw.add(newCircle);
