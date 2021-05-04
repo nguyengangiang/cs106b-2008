@@ -32,7 +32,7 @@
 *.app
 *.dSYM
 *.jar
-*.DS_Store
+**/.DS_Store
 *.class
 *.user
 **/build-*

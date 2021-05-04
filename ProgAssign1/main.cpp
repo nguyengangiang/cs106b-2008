@@ -67,7 +67,7 @@ void ChaosGame(vector<GPoint>& vertices, GWindow& gw) {
     }
 }
 
-int main() {
+int Gmain() {
     GWindow gw(800, 800);
     vector<GPoint> vertices;
     DrawTriangle(vertices);
