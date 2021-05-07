@@ -11,17 +11,6 @@ void Binary(int size, string result) {
     }
 }
 
-void Binary2(int size) {
-    if (size <= 0) {
-        cout << endl;
-    } else {
-        cout << "0";
-        Binary2(size - 1);
-        cout << "1";
-        Binary2(size -1 );
-    }
-}
-
 int main() {
     string result = "";
     Binary2(3);
