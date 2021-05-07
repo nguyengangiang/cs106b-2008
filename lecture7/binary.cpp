@@ -13,5 +13,5 @@ void Binary(int size, string result) {
 
 int main() {
     string result = "";
-    Binary2(3);
+    Binary(3, result);
 }
